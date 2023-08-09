@@ -4,6 +4,12 @@ name: Scheduled Health Check
 on:
   schedule:
     - cron: "*/20 * * * *"
+  workflow_dispatch:
+    inputs:
+      input:
+        description: "Test"
+        required: false
+
 
 jobs:
   health_check_job:
