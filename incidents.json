@@ -1,21 +1,5 @@
 {
     "active": "",
-    "inactive": "#### 20/10/2023 21:40hrs GMT
-
-
-
-Letters was unaccessible due to a breaking change made to our database server while installing a new application.
-
-20:00hrs GMT Issues are resolved. All services clear.
-
-
-#### 4/07/2022 10:00hrs GMT
-
-Fixed
-
-An outage on Azure's Events Hub has impacted real time event streaming, and outgoing integrations which replay events.
-
-We're actively monitoring the issue and attempting to replay missing integration data.
-
-12:00 All services back to normal
+    "inactive": "#### 20/10/2023 21:40hrs GMT\r\n\r\nLetters was unaccessible due to a breaking change made to our database server while installing a new application.\r\n\r\n20:00hrs GMT Issues are resolved. All services clear.\r\n\r\n\r\n\r\n#### 4/07/2022 10:00hrs GMT\r\n\r\nFixed\r\n\r\nAn outage on Azure's Events Hub has impacted real time event streaming, and outgoing integrations which replay events.\r\n\r\nWe're actively monitoring the issue and attempting to replay missing integration data.\r\n\r\n12:00 All services back to normal"
+}
 
