@@ -1,0 +1,21 @@
+{
+    "active": "",
+    "inactive": "#### 20/10/2023 21:40hrs GMT
+
+
+
+Letters was unaccessible due to a breaking change made to our database server while installing a new application.
+
+20:00hrs GMT Issues are resolved. All services clear.
+
+
+#### 4/07/2022 10:00hrs GMT
+
+Fixed
+
+An outage on Azure's Events Hub has impacted real time event streaming, and outgoing integrations which replay events.
+
+We're actively monitoring the issue and attempting to replay missing integration data.
+
+12:00 All services back to normal
+
