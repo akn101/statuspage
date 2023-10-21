@@ -254,7 +254,7 @@ async function genAllReports() {
 
 async function genIncidentReport() {
   const response = await fetch(
-    "https://raw.githubusercontent.com/akn101/statuspage/main/incidents.md"
+    "https://raw.githubusercontent.com/akn101/statuspage/main/incidents.json"
   );
   if (response.ok) {
     const json = await response.json();
