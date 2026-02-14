@@ -1,12 +1,15 @@
 name: Sync Incidents from Issues
 
 on:
+  issues:
+    types: [opened, edited, closed, reopened]
   workflow_dispatch:
 
 jobs:
   sync_incidents:
     runs-on: ubuntu-latest
     name: Sync incidents from GitHub Issues
+    if: contains(github.event.issue.labels.*.name, 'incident')
 
     steps:
       - uses: actions/checkout@v3.5.3
