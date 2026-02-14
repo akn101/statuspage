@@ -3,13 +3,13 @@
     {
       "date": "2026-02-14",
       "title": "EtonSTEM Multi-Day Outage",
-      "description": "EtonSTEM (https://etonstem.com) has been offline for 15 days since 2026-01-30 10:50:00 GMT.",
+      "description": "EtonSTEM (https://etonstem.com) has been offline for 15 days since 2026-01-30 10:50:00 GMT.\n\nRoot Cause Identified: The outage is due to a VPS payment failure. The hosting provider suspended the server after the payment card on file was declined. The ETA for the resolution is dependent on external client payment.",
       "service": "EtonSTEM",
       "url": "https://etonstem.com",
       "issueNumber": 1,
       "issueUrl": "https://github.com/akn101/statuspage/issues/1",
       "status": "monitoring",
-      "eta": "2026-02-15T22:10:06.550Z"
+      "eta": "2026-03-05T22:10:06.550Z"
     }
   ],
   "resolved": [
