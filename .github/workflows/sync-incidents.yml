@@ -1,0 +1,32 @@
+name: Sync Incidents from Issues
+
+on:
+  issues:
+    types: [opened, edited, closed, labeled, unlabeled]
+  workflow_dispatch:
+
+jobs:
+  sync_incidents:
+    runs-on: ubuntu-latest
+    name: Sync incidents from GitHub Issues
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Sync Issues to Incidents
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node sync-incidents-from-issues.js
+
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add incidents.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Sync incidents from GitHub Issues"
+          git push

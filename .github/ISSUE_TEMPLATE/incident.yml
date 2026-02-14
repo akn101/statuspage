@@ -1,0 +1,63 @@
+name: Service Incident
+description: Report a service outage or degradation
+title: "[INCIDENT] "
+labels: ["incident", "investigating"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to report a service incident. The incident will be automatically added to the status page.
+
+  - type: dropdown
+    id: service
+    attributes:
+      label: Service
+      description: Which service is affected?
+      options:
+        - Halcyon
+        - Iris
+        - Letters
+        - EchelonAPI
+        - EtonSTEM
+        - PathwayWeb
+        - aknWiki
+        - AuracleWP_Dev
+      multiple: false
+    validations:
+      required: true
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      description: Current incident status
+      options:
+        - investigating
+        - monitoring
+        - resolved
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe what's happening with the service
+      placeholder: "Service is experiencing intermittent timeouts..."
+    validations:
+      required: true
+
+  - type: input
+    id: eta
+    attributes:
+      label: Estimated Resolution Time
+      description: "Optional: Expected resolution time (format: YYYY-MM-DDTHH:MM:SSZ)"
+      placeholder: "2026-02-15T18:00:00Z"
+
+  - type: textarea
+    id: resolution
+    attributes:
+      label: Resolution Details
+      description: "For resolved incidents: describe what was done to fix the issue"
+      placeholder: "Issue was resolved by restarting the database server..."

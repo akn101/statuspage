@@ -29,6 +29,11 @@ jobs:
       - name: Generate Incident Reports
         run: node generate-incidents.js
 
+      - name: Sync Incidents to GitHub Issues
+        env:
+          INCIDENT_TOKEN: ${{ secrets.INCIDENT_TOKEN }}
+        run: node sync-issues-with-incidents.js
+
       - name: Commit Changes
         run: |
           git config --local user.email "action@github.com"

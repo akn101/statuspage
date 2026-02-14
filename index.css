@@ -219,7 +219,7 @@ footer a {
 }
 
 .statusSquare + .statusSquare {
-  margin-left: 3px;
+  margin-left: 2px;
 }
 
 .sectionUrl {
@@ -704,12 +704,22 @@ footer a {
     border-right: none;
   }
 
-  .statusHeader,
+  .statusHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .statusSubtitle {
     display: block;
   }
 
-  .statusHeadline,
+  .statusHeadline {
+    margin-left: 0;
+    text-align: right;
+  }
+
   .sectionUrl,
   .statusUptime {
     margin-left: 0;
@@ -717,13 +727,12 @@ footer a {
     text-align: left;
   }
 
-  .statusTitle,
-  .statusHeadline {
+  .statusTitle {
     display: inline-block;
   }
 
   .statusSquare + .statusSquare {
-    margin-left: 1px;
+    margin-left: 2px;
   }
 
   .statusSquare {
