@@ -1,8 +1,6 @@
 name: Sync Incidents from Issues
 
 on:
-  issues:
-    types: [opened, edited, closed, labeled, unlabeled]
   workflow_dispatch:
 
 jobs:
@@ -28,5 +26,4 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add incidents.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Sync incidents from GitHub Issues"
-          git push
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Sync incidents from GitHub Issues" && git pull --rebase && git push)
