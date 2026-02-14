@@ -17,7 +17,23 @@ jobs:
     name: Check all sites
     steps:
       - uses: actions/checkout@v3.5.3
-      - name: Run Shell Script
-        id: shell_script_run
+      - name: Run Health Check
+        id: health_check
         run: bash ./health-check.sh
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Generate Incident Reports
+        run: node generate-incidents.js
+
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add incidents.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update incidents from health checks"
+          git push
 

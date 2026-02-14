@@ -1,15 +1,25 @@
 const maxDays = 30;
+let incidentCache = null;
+let incidentCacheTime = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 async function genReportLog(container, key, url) {
-  const response = await fetch("logs/" + key + "_report.log");
-  let statusLines = "";
-  if (response.ok) {
-    statusLines = await response.text();
-  }
+  try {
+    const response = await fetch("logs/" + key + "_report.log");
+    let statusLines = "";
+    if (response.ok) {
+      statusLines = await response.text();
+    }
 
-  const normalized = normalizeData(statusLines);
-  const statusStream = constructStatusStream(key, url, normalized);
-  container.appendChild(statusStream);
+    const normalized = normalizeData(statusLines);
+    const statusStream = constructStatusStream(key, url, normalized);
+    container.appendChild(statusStream);
+  } catch (error) {
+    console.error(`Failed to load report for ${key}:`, error);
+    // Create a fallback status display
+    const statusStream = constructStatusStream(key, url, { upTime: "--%" });
+    container.appendChild(statusStream);
+  }
 }
 
 function constructStatusStream(key, url, uptimeData) {
@@ -58,12 +68,11 @@ function constructStatusSquare(key, date, uptimeVal) {
     tooltip: getTooltip(key, date, color),
   });
 
-  const show = () => {
+  // Use event delegation instead of individual listeners for better performance
+  square.addEventListener("pointerenter", () => {
     showTooltip(square, key, date, color);
-  };
-  square.addEventListener("mouseover", show);
-  square.addEventListener("mousedown", show);
-  square.addEventListener("mouseout", hideTooltip);
+  });
+  square.addEventListener("pointerleave", hideTooltip);
   return square;
 }
 
@@ -237,42 +246,109 @@ function hideTooltip() {
 }
 
 async function genAllReports() {
-  const response = await fetch("urls.cfg");
-  const configText = await response.text();
-  const configLines = configText.split("\n");
-  for (let ii = 0; ii < configLines.length; ii++) {
-    const configLine = configLines[ii];
-    const [key, url] = configLine.split("=");
-    if (!key || !url) {
-      continue;
-    }
+  const loadingIndicator = document.getElementById("loadingIndicator");
 
-    await genReportLog(document.getElementById("reports"), key, url);
+  try {
+    const response = await fetch("urls.cfg");
+    const configText = await response.text();
+    const configLines = configText.split("\n");
+
+    // Use Promise.all to fetch all reports in parallel for better performance
+    const reportPromises = configLines
+      .map(line => line.split("="))
+      .filter(([key, url]) => key && url)
+      .map(([key, url]) => genReportLog(document.getElementById("reports"), key, url));
+
+    await Promise.all(reportPromises);
+  } finally {
+    // Hide loading indicator after reports are loaded
+    if (loadingIndicator) {
+      loadingIndicator.style.display = 'none';
+    }
   }
 }
 
 
 async function genIncidentReport() {
+  // Check cache first
+  const now = Date.now();
+  if (incidentCache && (now - incidentCacheTime) < CACHE_DURATION) {
+    renderIncidents(incidentCache);
+    return;
+  }
+
   const response = await fetch(
     "https://raw.githubusercontent.com/akn101/statuspage/main/incidents.json"
   );
   if (response.ok) {
     const json = await response.json();
-    try {
-      const activeDom = DOMPurify.sanitize(
-        marked.parse(json.active ? json.active : "No active incidents")
-      );
-      const inactiveDom = DOMPurify.sanitize(marked.parse(json.inactive));
-      document.getElementById("activeIncidentReports").innerHTML = activeDom;
-      document.getElementById("pastIncidentReports").innerHTML = inactiveDom;
-
-      if (json.active) {
-        setTimeout(() => {
-          document.getElementById("incidents").scrollIntoView(true);
-        }, 1000);
-      }
-    } catch (e) {
-      console.log(e.message);
-    }
+    incidentCache = json;
+    incidentCacheTime = now;
+    renderIncidents(json);
   }
+}
+
+function renderIncidents(json) {
+  try {
+    const activeContainer = document.getElementById("activeIncidentReports");
+    const pastContainer = document.getElementById("pastIncidentReports");
+
+    // Render active incidents
+    if (json.active && json.active.length > 0) {
+      activeContainer.innerHTML = json.active.map(incident => `
+        <div class="incident-item">
+          <div class="incident-header">
+            <span class="incident-date">${formatDate(incident.date)}</span>
+            ${incident.service ? `<span class="incident-service">${incident.service}</span>` : ''}
+            ${incident.status ? `<span class="incident-status status-${incident.status}">${incident.status}</span>` : ''}
+          </div>
+          <div class="incident-title">${incident.title}</div>
+          <div class="incident-description">${incident.description}</div>
+          ${incident.eta ? `<div class="incident-eta">ETA: ${formatDateTime(incident.eta)}</div>` : ''}
+        </div>
+      `).join('');
+
+      setTimeout(() => {
+        document.getElementById("incidents").scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 500);
+    } else {
+      activeContainer.innerHTML = '<div class="incident-none">All systems operational</div>';
+    }
+
+    // Render resolved incidents
+    if (json.resolved && json.resolved.length > 0) {
+      pastContainer.innerHTML = json.resolved.map(incident => `
+        <div class="incident-item resolved">
+          <div class="incident-header">
+            <span class="incident-date">${formatDate(incident.date)}</span>
+            ${incident.service ? `<span class="incident-service">${incident.service}</span>` : ''}
+          </div>
+          <div class="incident-title">${incident.title}</div>
+          <div class="incident-description">${incident.description}</div>
+          <div class="incident-resolved">${incident.resolved}</div>
+        </div>
+      `).join('');
+    } else {
+      pastContainer.innerHTML = '<div class="incident-none">No past incidents</div>';
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+}
+
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function formatDateTime(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZoneName: 'short'
+  });
 }

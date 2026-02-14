@@ -1,4 +1,47 @@
 {
-    "active": "EtonSTEM inaccessible since 18:00hrs GMT on 26 Dec 2024. Investigation ongoing, ETA for resolution 18:00hrs GMT on 28 Dec 2024.",
-    "inactive": "#### System upgrade 18/07/24 16:30hrs BST\r\n\r\naknCloud services are unavailable temporarily while undergoing maintenance. \r\n\r\n20:00hrs GMT Issues are resolved. All services clear.\r\n\r\n\r\n\r\n#### 20/10/2023 21:40hrs GMT\r\n\r\nLetters was inaccessible due to a breaking change made to our database server while installing a new application.\r\n\r\n20:00hrs GMT Issues are resolved. All services clear.\r\n\r\n\r\n\r\n#### 4/07/2022 10:00hrs GMT\r\n\r\nFixed\r\n\r\nAn outage on Azure's Events Hub has impacted real time event streaming, and outgoing integrations which replay events.\r\n\r\nWe're actively monitoring the issue and attempting to replay missing integration data.\r\n\r\n12:00 All services back to normal"
+  "active": [
+    {
+      "date": "2026-01-30",
+      "title": "EtonSTEM Multi-Day Outage",
+      "description": "EtonSTEM (https://etonstem.com) has been offline for 15 days since 2026-01-30 10:50:00 GMT.",
+      "service": "EtonSTEM",
+      "url": "https://etonstem.com",
+      "status": "investigating",
+      "eta": "2026-02-15T22:10:06.550Z"
+    }
+  ],
+  "resolved": [
+    {
+      "date": "2026-02-01",
+      "title": "Letters Extended Outage",
+      "description": "Letters (https://letters.akn.me.uk) has been inaccessible for approximately 2 hours since 2026-02-01 19:51:00 GMT.",
+      "service": "Letters",
+      "url": "https://letters.akn.me.uk",
+      "resolved": "2026-02-01 21:54:00 GMT - Service restored"
+    },
+    {
+      "date": "2025-12-18",
+      "title": "EchelonAPI Multi-Day Outage",
+      "description": "EchelonAPI (https://api.akn.me.uk) has been offline for 45 days since 2025-12-18 18:39:00 GMT.",
+      "service": "EchelonAPI",
+      "url": "https://api.akn.me.uk",
+      "resolved": "2026-02-01 23:33:00 GMT - Service restored"
+    },
+    {
+      "date": "2025-12-18",
+      "title": "Letters Multi-Day Outage",
+      "description": "Letters (https://letters.akn.me.uk) has been offline for 17 days since 2025-12-18 18:38:00 GMT.",
+      "service": "Letters",
+      "url": "https://letters.akn.me.uk",
+      "resolved": "2026-01-04 18:54:00 GMT - Service restored"
+    },
+    {
+      "date": "2024-11-27",
+      "title": "AuracleWP_Dev Multi-Day Outage",
+      "description": "AuracleWP_Dev (Unknown URL) has been offline for 4 days since 2024-11-27 22:22:00 GMT.",
+      "service": "AuracleWP_Dev",
+      "url": "Unknown URL",
+      "resolved": "2024-12-01 22:51:00 GMT - Service restored"
+    }
+  ]
 }

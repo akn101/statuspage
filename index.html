@@ -10,8 +10,11 @@
   <body>
     <div class="pageContainer">
       <div class="headline">
-        <img src="logo.svg" alt="Logo" width="150px" />
-        <span> System Status </span>
+        <img src="logo.svg" alt="AKN" />
+      </div>
+      <div id="loadingIndicator" class="loadingIndicator">
+        <div class="spinner"></div>
+        <p>Loading status information...</p>
       </div>
       <div id="reports" class="reportContainer"></div>
             <div id="incidents" class="incidentsContainer">
@@ -19,13 +22,13 @@
           <div class="statusHeader">
             <h3 class="incidentReportsHeader">Incident Reports</h3>
           </div>
-          <h4>Active Reports</h4>
-          <div id="activeIncidentReports">
+          <h4>Active Incidents</h4>
+          <div id="activeIncidentReports" class="incidentContent">
             None recorded
           </div>
           <hr />
-          <h4>Past Reports</h4>
-          <div id="pastIncidentReports">
+          <h4>Past Incidents</h4>
+          <div id="pastIncidentReports" class="incidentContent">
             None recorded
           </div>
         </div>
