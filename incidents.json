@@ -21,7 +21,7 @@
       "url": null,
       "issueNumber": 5,
       "issueUrl": "https://github.com/akn101/statuspage/issues/5",
-      "resolved": "2026-02-14 22:28:28 GMT - 2024-12-01 22:51:00 GMT - Service restored\n\n---\n\n*This incident was backfilled from the incidents.json file*"
+      "resolved": "2026-02-14 22:28:28 GMT - 2024-12-01 22:51:00 GMT - Service restored"
     },
     {
       "date": "2026-02-14",
@@ -31,7 +31,7 @@
       "url": "https://letters.akn.me.uk",
       "issueNumber": 4,
       "issueUrl": "https://github.com/akn101/statuspage/issues/4",
-      "resolved": "2026-02-14 22:28:26 GMT - 2026-01-04 18:54:00 GMT - Service restored\n\n---\n\n*This incident was backfilled from the incidents.json file*"
+      "resolved": "2026-02-14 22:28:26 GMT - 2026-01-04 18:54:00 GMT - Service restored"
     },
     {
       "date": "2026-02-14",
@@ -41,7 +41,7 @@
       "url": "https://api.akn.me.uk",
       "issueNumber": 3,
       "issueUrl": "https://github.com/akn101/statuspage/issues/3",
-      "resolved": "2026-02-14 22:28:24 GMT - 2026-02-01 23:33:00 GMT - Service restored\n\n---\n\n*This incident was backfilled from the incidents.json file*"
+      "resolved": "2026-02-14 22:28:24 GMT - 2026-02-01 23:33:00 GMT - Service restored"
     },
     {
       "date": "2026-02-14",
