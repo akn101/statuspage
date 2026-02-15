@@ -108,6 +108,12 @@ function parseIssueBody(body) {
   return result;
 }
 
+function cleanResolution(text) {
+  if (!text) return text;
+  // Strip auto-generated footer blocks if present
+  return text.split('---')[0].trim();
+}
+
 // Convert issue to incident format
 function issueToIncident(issue, serviceUrls) {
   const parsed = parseIssueBody(issue.body);
@@ -143,7 +149,19 @@ function issueToIncident(issue, serviceUrls) {
   } else {
     // Closed issue = resolved
     const closedDate = new Date(issue.closed_at);
-    incident.resolved = `${closedDate.toISOString().replace('T', ' ').split('.')[0]} GMT - ${parsed.resolution || 'Issue resolved'}`;
+    const closedStr = `${closedDate.toISOString().replace('T', ' ').split('.')[0]} GMT`;
+    const resolution = cleanResolution(parsed.resolution);
+    if (resolution) {
+      const trimmed = resolution.trim();
+      // If resolution already starts with a date, don't prepend closed date
+      if (/^\d{4}-\d{2}-\d{2}\b/.test(trimmed)) {
+        incident.resolved = trimmed;
+      } else {
+        incident.resolved = `${closedStr} - ${trimmed}`;
+      }
+    } else {
+      incident.resolved = `${closedStr} - Issue resolved`;
+    }
   }
 
   return incident;
