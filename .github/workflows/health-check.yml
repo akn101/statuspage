@@ -42,7 +42,7 @@ jobs:
 
       - name: Sync Incidents to GitHub Issues
         env:
-          INCIDENT_TOKEN: ${{ secrets.INCIDENT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node sync-issues-with-incidents.js
 
       - name: Commit Changes
