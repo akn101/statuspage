@@ -3,16 +3,87 @@
     {
       "date": "2026-02-14",
       "title": "EtonSTEM Multi-Day Outage",
-      "description": "EtonSTEM (https://etonstem.com) has been offline for 15 days since 2026-01-30 10:50:00 GMT.",
+      "description": "EtonSTEM (https://etonstem.com) has been offline for 16 days since 2026-01-30 10:50:00 GMT.",
+      "service": "EtonSTEM",
+      "url": "https://etonstem.com",
+      "issueNumber": 6,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/6",
+      "status": "investigating",
+      "eta": "2026-02-16T16:48:15.977Z"
+    },
+    {
+      "date": "2026-02-14",
+      "title": "EtonSTEM Multi-Day Outage",
+      "description": "EtonSTEM (https://etonstem.com) has been offline for 15 days since 2026-01-30 10:50:00 GMT.\n\nRoot Cause Identified: The outage is due to a VPS payment failure. The hosting provider suspended the server after the payment card on file was declined. The ETA for the resolution is dependent on external client payment.",
       "service": "EtonSTEM",
       "url": "https://etonstem.com",
       "issueNumber": 1,
       "issueUrl": "https://github.com/akn101/statuspage/issues/1",
-      "status": "investigating",
-      "eta": "2026-02-15T22:10:06.550Z"
+      "status": "monitoring",
+      "eta": "2026-03-05T22:10:06.550Z"
     }
   ],
   "resolved": [
+    {
+      "date": "2026-02-15",
+      "title": "Letters Multi-Day Outage",
+      "description": "Letters (https://letters.akn.me.uk) has been offline for 17 days since 2025-12-19 02:03:00 GMT.",
+      "service": "Letters",
+      "url": "https://letters.akn.me.uk",
+      "issueNumber": 12,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/12",
+      "resolved": "2026-02-15 09:59:15 GMT - 2026-01-04 18:54:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2025-12-19\nService URL: https://letters.akn.me.uk"
+    },
+    {
+      "date": "2026-02-15",
+      "title": "EchelonAPI Multi-Day Outage",
+      "description": "EchelonAPI (https://api.akn.me.uk) has been offline for 45 days since 2025-12-19 02:03:00 GMT.",
+      "service": "EchelonAPI",
+      "url": "https://api.akn.me.uk",
+      "issueNumber": 11,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/11",
+      "resolved": "2026-02-15 09:59:13 GMT - 2026-02-01 23:33:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2025-12-19\nService URL: https://api.akn.me.uk"
+    },
+    {
+      "date": "2026-02-14",
+      "title": "AuracleWP_Dev Multi-Day Outage",
+      "description": "AuracleWP_Dev (Unknown URL) has been offline for 4 days since 2024-11-27 22:22:00 GMT.",
+      "service": "AuracleWP_Dev",
+      "url": null,
+      "issueNumber": 10,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/10",
+      "resolved": "2026-02-14 23:06:23 GMT - 2024-12-01 22:51:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2024-11-27\nService URL: Unknown URL"
+    },
+    {
+      "date": "2026-02-14",
+      "title": "Letters Multi-Day Outage",
+      "description": "Letters (https://letters.akn.me.uk) has been offline for 17 days since 2025-12-18 19:24:00 GMT.",
+      "service": "Letters",
+      "url": "https://letters.akn.me.uk",
+      "issueNumber": 9,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/9",
+      "resolved": "2026-02-14 23:06:21 GMT - 2026-01-04 18:54:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2025-12-18\nService URL: https://letters.akn.me.uk"
+    },
+    {
+      "date": "2026-02-14",
+      "title": "EchelonAPI Multi-Day Outage",
+      "description": "EchelonAPI (https://api.akn.me.uk) has been offline for 45 days since 2025-12-18 19:24:00 GMT.",
+      "service": "EchelonAPI",
+      "url": "https://api.akn.me.uk",
+      "issueNumber": 8,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/8",
+      "resolved": "2026-02-14 23:06:19 GMT - 2026-02-01 23:33:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2025-12-18\nService URL: https://api.akn.me.uk"
+    },
+    {
+      "date": "2026-02-14",
+      "title": "Letters Extended Outage",
+      "description": "Letters (https://letters.akn.me.uk) has been inaccessible for approximately 2 hours since 2026-02-01 19:51:00 GMT.",
+      "service": "Letters",
+      "url": "https://letters.akn.me.uk",
+      "issueNumber": 7,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/7",
+      "resolved": "2026-02-14 23:06:17 GMT - 2026-02-01 21:54:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2026-02-01\nService URL: https://letters.akn.me.uk"
+    },
     {
       "date": "2026-02-14",
       "title": "AuracleWP_Dev Multi-Day Outage",
