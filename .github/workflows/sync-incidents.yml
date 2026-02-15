@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Ensure up to date
+        run: git pull --rebase
+
       - name: Sync Issues to Incidents
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,6 +41,5 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git pull --rebase
           git add incidents.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "Sync incidents from GitHub Issues" && git push)
