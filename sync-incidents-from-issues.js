@@ -52,6 +52,8 @@ function fetchIssues() {
 // Parse issue body to extract incident details
 function parseIssueBody(body) {
   const result = {
+    incidentId: null,
+    startTime: null,
     service: null,
     status: 'investigating',
     description: '',
@@ -60,6 +62,12 @@ function parseIssueBody(body) {
   };
 
   if (!body) return result;
+
+  // Extract Incident ID
+  const idMatch = body.match(/### Incident ID\s*\n\s*(.+)/);
+  if (idMatch) {
+    result.incidentId = idMatch[1].trim();
+  }
 
   // Extract Service
   const serviceMatch = body.match(/### Service\s*\n\s*(.+)/);
@@ -91,6 +99,12 @@ function parseIssueBody(body) {
     result.resolution = resMatch[1].trim();
   }
 
+  // Extract Started
+  const startedMatch = body.match(/Started:\s*(.+)/);
+  if (startedMatch) {
+    result.startTime = startedMatch[1].trim();
+  }
+
   return result;
 }
 
@@ -107,8 +121,12 @@ function issueToIncident(issue, serviceUrls) {
     }
   }
 
+  const startTime = parsed.startTime || createdDate.toISOString();
+  const incidentId = parsed.incidentId || `${parsed.service}-${startTime}`;
   const incident = {
-    date: createdDate.toISOString().split('T')[0],
+    incidentId,
+    date: new Date(startTime).toISOString().split('T')[0],
+    startTime,
     title: issue.title.replace(/^\[INCIDENT\]\s*/i, '').trim(),
     description: parsed.description || issue.title,
     service: parsed.service,
@@ -139,12 +157,35 @@ async function syncIncidents() {
     console.log(`Found ${issues.length} incident issue(s)`);
 
     const serviceUrls = getServiceUrls();
-    const active = [];
-    const resolved = [];
+    const bestByKey = new Map();
 
     issues.forEach(issue => {
       const incident = issueToIncident(issue, serviceUrls);
+      const key = incident.incidentId || `${incident.service}-${incident.startTime || incident.date}`;
+      const existing = bestByKey.get(key);
+      if (!existing) {
+        bestByKey.set(key, { issue, incident });
+        return;
+      }
 
+      const existingOpen = existing.issue.state === 'open';
+      const currentOpen = issue.state === 'open';
+      if (existingOpen !== currentOpen) {
+        if (currentOpen) {
+          bestByKey.set(key, { issue, incident });
+        }
+        return;
+      }
+
+      if (new Date(issue.updated_at) > new Date(existing.issue.updated_at)) {
+        bestByKey.set(key, { issue, incident });
+      }
+    });
+
+    const active = [];
+    const resolved = [];
+
+    for (const { issue, incident } of bestByKey.values()) {
       if (issue.state === 'open') {
         active.push(incident);
         console.log(`  Active: #${issue.number} - ${incident.title}`);
@@ -152,7 +193,7 @@ async function syncIncidents() {
         resolved.push(incident);
         console.log(`  Resolved: #${issue.number} - ${incident.title}`);
       }
-    });
+    }
 
     // Sort by date (newest first)
     active.sort((a, b) => new Date(b.date) - new Date(a.date));

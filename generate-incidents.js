@@ -148,8 +148,12 @@ function generateIncidents() {
     console.log(`  Found ${outages.length} outage(s)`);
 
     outages.forEach(outage => {
+      const incidentId = `${serviceName}-${outage.startTime.toISOString()}`;
       const incident = {
+        incidentId,
         date: formatDate(outage.startTime),
+        startTime: outage.startTime.toISOString(),
+        endTime: outage.endTime.toISOString(),
         title: generateIncidentTitle(serviceName, outage),
         description: generateIncidentDescription(serviceName, outage, url),
         service: serviceName,

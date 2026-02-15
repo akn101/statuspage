@@ -87,6 +87,14 @@ async function updateIssue(issueNumber, incident) {
   });
 }
 
+// Update only the issue body (preserve labels/state)
+async function updateIssueBody(issueNumber, incident) {
+  const body = generateIssueBody(incident);
+  console.log(`  Updating issue body #${issueNumber}`);
+  await githubRequest('PATCH', `/repos/${REPO_OWNER}/${REPO_NAME}/issues/${issueNumber}`, {
+    body
+  });
+}
 // Close GitHub issue
 async function closeIssue(issueNumber, resolution) {
   console.log(`  Closing issue #${issueNumber}`);
@@ -113,7 +121,10 @@ async function reopenIssue(issueNumber) {
 
 // Generate issue body from incident
 function generateIssueBody(incident) {
-  let body = `### Service\n\n${incident.service || 'Unknown'}\n\n`;
+  const incidentId = incident.incidentId || getIncidentKey(incident);
+  const started = incident.startTime || incident.date;
+  let body = `### Incident ID\n\n${incidentId}\n\n`;
+  body += `### Service\n\n${incident.service || 'Unknown'}\n\n`;
   body += `### Status\n\n${incident.status || 'investigating'}\n\n`;
   body += `### Description\n\n${incident.description}\n\n`;
 
@@ -127,7 +138,7 @@ function generateIssueBody(incident) {
 
   body += `---\n\n`;
   body += `*Auto-generated from health check logs*\n\n`;
-  body += `Started: ${incident.date}\n`;
+  body += `Started: ${started}\n`;
 
   if (incident.url) {
     body += `Service URL: ${incident.url}\n`;
@@ -138,17 +149,36 @@ function generateIssueBody(incident) {
 
 // Extract incident key (service + date)
 function getIncidentKey(incident) {
-  return `${incident.service}-${incident.date}`;
+  if (incident.incidentId) return incident.incidentId;
+  const started = incident.startTime || incident.date;
+  return `${incident.service}-${started}`;
+}
+
+function getIncidentFallbackKey(incident) {
+  const title = incident.title || '';
+  const service = incident.service || '';
+  return service ? `${service}::${title}` : title;
 }
 
 // Parse issue to get incident key
 function getIssueIncidentKey(issue) {
+  const idMatch = issue.body?.match(/### Incident ID\s*\n\s*(.+)/);
+  if (idMatch) {
+    return idMatch[1].trim();
+  }
   const serviceMatch = issue.body?.match(/### Service\s*\n\s*(.+)/);
   const dateMatch = issue.body?.match(/Started:\s*(.+)/);
   if (serviceMatch && dateMatch) {
     return `${serviceMatch[1].trim()}-${dateMatch[1].trim()}`;
   }
   return null;
+}
+
+function getIssueFallbackKey(issue) {
+  const serviceMatch = issue.body?.match(/### Service\s*\n\s*(.+)/);
+  const service = serviceMatch ? serviceMatch[1].trim() : '';
+  const title = issue.title?.replace(/^\[INCIDENT\]\s*/i, '').trim() || '';
+  return service ? `${service}::${title}` : title;
 }
 
 // Main sync function
@@ -163,15 +193,25 @@ async function syncIssuesWithIncidents() {
     // Build maps of existing issues
     const openIssuesMap = new Map();
     const closedIssuesMap = new Map();
+    const openIssuesFallback = new Map();
+    const closedIssuesFallback = new Map();
 
     existingIssues.open.forEach(issue => {
       const key = getIssueIncidentKey(issue);
-      if (key) openIssuesMap.set(key, issue);
+      if (key) {
+        openIssuesMap.set(key, issue);
+      } else {
+        openIssuesFallback.set(getIssueFallbackKey(issue), issue);
+      }
     });
 
     existingIssues.closed.forEach(issue => {
       const key = getIssueIncidentKey(issue);
-      if (key) closedIssuesMap.set(key, issue);
+      if (key) {
+        closedIssuesMap.set(key, issue);
+      } else {
+        closedIssuesFallback.set(getIssueFallbackKey(issue), issue);
+      }
     });
 
     console.log(`Found ${openIssuesMap.size} open and ${closedIssuesMap.size} closed incident issues\n`);
@@ -180,18 +220,25 @@ async function syncIssuesWithIncidents() {
     console.log('Processing active incidents...');
     for (const incident of incidents.active) {
       const key = getIncidentKey(incident);
+      const fallbackKey = getIncidentFallbackKey(incident);
       const existingOpen = openIssuesMap.get(key);
       const existingClosed = closedIssuesMap.get(key);
+      const fallbackOpen = existingOpen ? null : openIssuesFallback.get(fallbackKey);
+      const fallbackClosed = existingClosed ? null : closedIssuesFallback.get(fallbackKey);
 
-      if (existingOpen) {
+      if (existingOpen || fallbackOpen) {
+        const issue = existingOpen || fallbackOpen;
         // Update existing open issue
-        await updateIssue(existingOpen.number, incident);
-        openIssuesMap.delete(key);
-      } else if (existingClosed) {
+        await updateIssue(issue.number, incident);
+        if (existingOpen) openIssuesMap.delete(key);
+        if (fallbackOpen) openIssuesFallback.delete(fallbackKey);
+      } else if (existingClosed || fallbackClosed) {
+        const issue = existingClosed || fallbackClosed;
         // Reopen closed issue (service went down again)
-        await reopenIssue(existingClosed.number);
-        await updateIssue(existingClosed.number, incident);
-        closedIssuesMap.delete(key);
+        await reopenIssue(issue.number);
+        await updateIssue(issue.number, incident);
+        if (existingClosed) closedIssuesMap.delete(key);
+        if (fallbackClosed) closedIssuesFallback.delete(fallbackKey);
       } else {
         // Create new issue
         const issue = await createIssue(incident);
@@ -206,15 +253,25 @@ async function syncIssuesWithIncidents() {
     console.log('\nProcessing resolved incidents...');
     for (const incident of incidents.resolved) {
       const key = getIncidentKey(incident);
+      const fallbackKey = getIncidentFallbackKey(incident);
       const existingOpen = openIssuesMap.get(key);
       const existingClosed = closedIssuesMap.get(key);
+      const fallbackOpen = existingOpen ? null : openIssuesFallback.get(fallbackKey);
+      const fallbackClosed = existingClosed ? null : closedIssuesFallback.get(fallbackKey);
 
-      if (existingOpen) {
+      if (existingOpen || fallbackOpen) {
+        const issue = existingOpen || fallbackOpen;
         // Close the open issue
-        await closeIssue(existingOpen.number, incident.resolved);
-        console.log(`  ✓ Closed issue #${existingOpen.number}: ${existingOpen.html_url}`);
-        openIssuesMap.delete(key);
-      } else if (!existingClosed) {
+        await closeIssue(issue.number, incident.resolved);
+        console.log(`  ✓ Closed issue #${issue.number}: ${issue.html_url}`);
+        if (existingOpen) openIssuesMap.delete(key);
+        if (fallbackOpen) openIssuesFallback.delete(fallbackKey);
+      } else if (existingClosed || fallbackClosed) {
+        const issue = existingClosed || fallbackClosed;
+        await updateIssueBody(issue.number, incident);
+        if (existingClosed) closedIssuesMap.delete(key);
+        if (fallbackClosed) closedIssuesFallback.delete(fallbackKey);
+      } else {
         // Create issue and immediately close it (for historical record)
         const issue = await createIssue(incident);
         await closeIssue(issue.number, incident.resolved);
