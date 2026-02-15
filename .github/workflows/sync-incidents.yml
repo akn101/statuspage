@@ -17,7 +17,7 @@ jobs:
   sync_incidents:
     runs-on: ubuntu-latest
     name: Sync incidents from GitHub Issues
-    if: contains(github.event.issue.labels.*.name, 'incident')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'incident')
 
     steps:
       - uses: actions/checkout@v4
