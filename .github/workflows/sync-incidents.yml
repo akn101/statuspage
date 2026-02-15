@@ -17,27 +17,45 @@ jobs:
   sync_incidents:
     runs-on: ubuntu-latest
     name: Sync incidents from GitHub Issues
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'incident')
 
     steps:
+      - name: Check for incident label
+        id: gate
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "run_sync=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          labels="${{ join(github.event.issue.labels.*.name, ',') }}"
+          if [[ "$labels" == *"incident"* ]]; then
+            echo "run_sync=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_sync=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.gate.outputs.run_sync == 'true'
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+        if: steps.gate.outputs.run_sync == 'true'
         with:
           node-version: '18'
 
       - name: Ensure up to date
+        if: steps.gate.outputs.run_sync == 'true'
         run: git pull --rebase
 
       - name: Sync Issues to Incidents
+        if: steps.gate.outputs.run_sync == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node sync-incidents-from-issues.js
 
       - name: Commit Changes
+        if: steps.gate.outputs.run_sync == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
