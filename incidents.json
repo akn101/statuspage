@@ -1,15 +1,15 @@
 {
   "active": [
     {
-      "date": "2026-02-14",
+      "date": "2026-02-15",
       "title": "EtonSTEM Multi-Day Outage",
-      "description": "EtonSTEM (https://etonstem.com) has been offline for 16 days since 2026-01-30 10:50:00 GMT.",
+      "description": "EtonSTEM (https://etonstem.com) has been offline for 15 days since 2026-01-30 10:50:00 GMT.\n\nRoot Cause Identified: The outage is due to a VPS payment failure. The hosting provider suspended the server after the payment card on file was declined. The ETA for the resolution is dependent on external client payment.",
       "service": "EtonSTEM",
       "url": "https://etonstem.com",
-      "issueNumber": 6,
-      "issueUrl": "https://github.com/akn101/statuspage/issues/6",
-      "status": "investigating",
-      "eta": "2026-02-16T16:48:15.977Z"
+      "issueNumber": 13,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/13",
+      "status": "monitoring",
+      "eta": "2026-03-05T22:10:06.550Z"
     },
     {
       "date": "2026-02-14",
@@ -24,6 +24,46 @@
     }
   ],
   "resolved": [
+    {
+      "date": "2026-02-15",
+      "title": "Letters Extended Outage",
+      "description": "Letters (https://letters.akn.me.uk) has been inaccessible for approximately 2 hours since 2026-02-01 19:51:00 GMT.",
+      "service": "Letters",
+      "url": "https://letters.akn.me.uk",
+      "issueNumber": 17,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/17",
+      "resolved": "2026-02-15 17:20:03 GMT - 2026-02-14 22:28:22 GMT - 2026-02-01 21:54:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2026-02-14T22:28:22.000Z\nService URL: https://letters.akn.me.uk"
+    },
+    {
+      "date": "2026-02-15",
+      "title": "EchelonAPI Multi-Day Outage",
+      "description": "EchelonAPI (https://api.akn.me.uk) has been offline for 45 days since 2025-12-18 18:39:00 GMT.",
+      "service": "EchelonAPI",
+      "url": "https://api.akn.me.uk",
+      "issueNumber": 16,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/16",
+      "resolved": "2026-02-15 17:20:01 GMT - 2026-02-14 22:28:24 GMT - 2026-02-01 23:33:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2026-02-14T22:28:23.000Z\nService URL: https://api.akn.me.uk"
+    },
+    {
+      "date": "2026-02-15",
+      "title": "Letters Multi-Day Outage",
+      "description": "Letters (https://letters.akn.me.uk) has been offline for 17 days since 2025-12-18 18:38:00 GMT.",
+      "service": "Letters",
+      "url": "https://letters.akn.me.uk",
+      "issueNumber": 15,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/15",
+      "resolved": "2026-02-15 17:19:59 GMT - 2026-02-14 22:28:26 GMT - 2026-01-04 18:54:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2026-02-14T22:28:25.000Z\nService URL: https://letters.akn.me.uk"
+    },
+    {
+      "date": "2026-02-15",
+      "title": "AuracleWP_Dev Multi-Day Outage",
+      "description": "AuracleWP_Dev (Unknown URL) has been offline for 4 days since 2024-11-27 22:22:00 GMT.",
+      "service": "AuracleWP_Dev",
+      "url": null,
+      "issueNumber": 14,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/14",
+      "resolved": "2026-02-15 17:19:57 GMT - 2026-02-14 22:28:28 GMT - 2024-12-01 22:51:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2026-02-14T22:28:27.000Z"
+    },
     {
       "date": "2026-02-15",
       "title": "Letters Multi-Day Outage",
@@ -83,6 +123,16 @@
       "issueNumber": 7,
       "issueUrl": "https://github.com/akn101/statuspage/issues/7",
       "resolved": "2026-02-14 23:06:17 GMT - 2026-02-01 21:54:00 GMT - Service restored\n\n---\n\n*Auto-generated from health check logs*\n\nStarted: 2026-02-01\nService URL: https://letters.akn.me.uk"
+    },
+    {
+      "date": "2026-02-14",
+      "title": "EtonSTEM Multi-Day Outage",
+      "description": "EtonSTEM (https://etonstem.com) has been offline for 16 days since 2026-01-30 10:50:00 GMT.",
+      "service": "EtonSTEM",
+      "url": "https://etonstem.com",
+      "issueNumber": 6,
+      "issueUrl": "https://github.com/akn101/statuspage/issues/6",
+      "resolved": "2026-02-15 17:19:39 GMT - Issue resolved"
     },
     {
       "date": "2026-02-14",
