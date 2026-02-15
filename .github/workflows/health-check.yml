@@ -10,19 +10,28 @@ on:
         description: "Test"
         required: false
 
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: statuspage-health-check
+  cancel-in-progress: false
 
 jobs:
   health_check_job:
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Run Health Check
         id: health_check
         run: bash ./health-check.sh
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
 
@@ -40,4 +49,3 @@ jobs:
           git config --local user.name "GitHub Action"
           git add incidents.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update incidents from health checks" && git pull --rebase && git push)
-

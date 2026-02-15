@@ -34,7 +34,7 @@ do
 
   for i in 1 2 3 4; 
   do
-    response=$(curl --write-out '%{http_code}' --silent --output /dev/null $url)
+    response=$(curl --connect-timeout 5 --max-time 10 --write-out '%{http_code}' --silent --output /dev/null $url)
     if [ "$response" -eq 200 ] || [ "$response" -eq 202 ] || [ "$response" -eq 301 ] || [ "$response" -eq 302 ] || [ "$response" -eq 307 ]; then
       result="success"
     else
@@ -62,6 +62,10 @@ then
   git config --global user.name 'Ahnaf Kabir'
   git config --global user.email 'kabir.a@akn.me.uk'
   git add -A --force logs/
-  git commit -am '[Automated] Update Health Check Logs'
-  git push
+  if ! git diff --quiet --staged; then
+    git commit -m '[Automated] Update Health Check Logs'
+    git push
+  else
+    echo "No log changes to commit."
+  fi
 fi
