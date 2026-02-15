@@ -7,7 +7,7 @@
       "service": "EtonSTEM",
       "url": "https://etonstem.com",
       "status": "investigating",
-      "eta": "2026-02-16T11:41:28.640Z"
+      "eta": "2026-02-16T12:02:42.691Z"
     }
   ],
   "resolved": [
@@ -22,7 +22,7 @@
     {
       "date": "2025-12-19",
       "title": "EchelonAPI Multi-Day Outage",
-      "description": "EchelonAPI (https://api.akn.me.uk) has been offline for 45 days since 2025-12-19 04:59:00 GMT.",
+      "description": "EchelonAPI (https://api.akn.me.uk) has been offline for 45 days since 2025-12-19 05:33:00 GMT.",
       "service": "EchelonAPI",
       "url": "https://api.akn.me.uk",
       "resolved": "2026-02-01 23:33:00 GMT - Service restored"
@@ -30,7 +30,7 @@
     {
       "date": "2025-12-19",
       "title": "Letters Multi-Day Outage",
-      "description": "Letters (https://letters.akn.me.uk) has been offline for 17 days since 2025-12-19 04:59:00 GMT.",
+      "description": "Letters (https://letters.akn.me.uk) has been offline for 17 days since 2025-12-19 05:32:00 GMT.",
       "service": "Letters",
       "url": "https://letters.akn.me.uk",
       "resolved": "2026-01-04 18:54:00 GMT - Service restored"
